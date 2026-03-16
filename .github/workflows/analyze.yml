@@ -1,36 +1,16 @@
-name: Analyze TP-Link Firmware
+- name: Extract important firmware strings
+  run: |
+    echo "========== PRODUCT =========="
+    strings "Archer_C54(US)_V1_230608.bin" | grep -i archer || true
 
-on:
-  workflow_dispatch:
+    echo "========== TP-LINK =========="
+    strings "Archer_C54(US)_V1_230608.bin" | grep -i tplink || true
 
-jobs:
-  analyze:
-    runs-on: ubuntu-latest
+    echo "========== BOARD =========="
+    strings "Archer_C54(US)_V1_230608.bin" | grep -i board || true
 
-    steps:
-      - name: Checkout repo
-        uses: actions/checkout@v4
+    echo "========== HW =========="
+    strings "Archer_C54(US)_V1_230608.bin" | grep -i hw || true
 
-      - name: Install tools
-        run: |
-          sudo apt update
-          sudo apt install -y binwalk
-
-      - name: Show firmware info
-        run: |
-          ls -lh
-
-      - name: Show strings
-        run: |
-          strings "Archer_C54(US)_V1_230608.bin" | grep -i tplink || true
-          strings "Archer_C54(US)_V1_230608.bin" | grep -i archer || true
-          strings "Archer_C54(US)_V1_230608.bin" | grep -i board || true
-          strings "Archer_C54(US)_V1_230608.bin" | grep -i hw || true
-
-      - name: Show header
-        run: |
-          hexdump -C "Archer_C54(US)_V1_230608.bin" | head -n 40
-
-      - name: Scan firmware
-        run: |
-          binwalk "Archer_C54(US)_V1_230608.bin"
+    echo "========== MODEL =========="
+    strings "Archer_C54(US)_V1_230608.bin" | grep -i c54 || true
